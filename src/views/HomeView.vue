@@ -4,12 +4,16 @@ import { getProducts } from "@/api/catalog";
 import ProductCard from "@/components/ProductCard.vue";
 import LoadingSpinner from "@/components/LaoadingSpinner.vue";
 import { asArray } from "@/utils/apiResponse";
+import { useAuthStore } from "@/stores/auth";
+import { useWishlistStore } from "@/stores/wishlist";
 
 const products = ref([]);
 const loading = ref(true);
 const error = ref("");
 const searchQuery = ref("");
 const selectedType = ref("all");
+const auth = useAuthStore();
+const wishlist = useWishlistStore();
 
 const productCount = computed(() => products.value.length);
 const productTypes = computed(() => {
@@ -55,6 +59,10 @@ const loadPublicProducts = async () => {
 onMounted(async () => {
   try {
     await loadPublicProducts();
+
+    if (auth.token) {
+      await wishlist.fetchWishlist();
+    }
   } catch (err) {
     error.value = err.response?.data?.message ?? "Unable to load data.";
   } finally {

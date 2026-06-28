@@ -3,6 +3,7 @@ import { onMounted, ref } from "vue";
 import { useCartStore } from "@/stores/cart";
 import LoadingSpinner from "@/components/LaoadingSpinner.vue";
 import { lineTotal, money } from "@/utils/money";
+import { fallbackProductImage, productImageUrl } from "@/utils/productImage";
 
 const cart = useCartStore();
 const loading = ref(true);
@@ -17,6 +18,12 @@ onMounted(async () => {
     loading.value = false;
   }
 });
+
+const productForItem = (item) => item.product ?? item;
+
+const useFallbackImage = (event) => {
+  event.target.src = fallbackProductImage;
+};
 </script>
 
 <template>
@@ -31,9 +38,19 @@ onMounted(async () => {
 
     <div v-else-if="cart.items.length" class="stack">
       <article v-for="item in cart.items" :key="item.id" class="line-item">
-        <div>
-          <h3>{{ item.product?.name ?? item.name }}</h3>
-          <p>Qty: {{ item.quantity ?? item.qty ?? 1 }}</p>
+        <div class="cart-product">
+          <img
+            :src="productImageUrl(productForItem(item))"
+            :alt="item.product?.name ?? item.name ?? 'Product image'"
+            class="cart-product-image"
+            loading="lazy"
+            @error="useFallbackImage"
+          />
+
+          <div>
+            <h3>{{ item.product?.name ?? item.name }}</h3>
+            <p>Qty: {{ item.quantity ?? item.qty ?? 1 }}</p>
+          </div>
         </div>
 
         <strong>${{ money(lineTotal(item)) }}</strong>

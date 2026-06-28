@@ -35,9 +35,27 @@ const confirmLogout = async () => {
       <router-link to="/">Products</router-link>
 
       <template v-if="isLoggedIn">
-        <router-link to="/wishlist">Wishlist</router-link>
-        <router-link to="/cart">Cart</router-link>
-        <router-link to="/orders">Orders</router-link>
+        <router-link to="/wishlist">
+          <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z" />
+          </svg>
+          <span>Wishlist</span>
+        </router-link>
+        <router-link to="/cart">
+          <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 6h15l-1.7 8.5a2 2 0 0 1-2 1.5H9a2 2 0 0 1-2-1.6L5 3H2" />
+            <circle cx="9" cy="20" r="1.4" />
+            <circle cx="18" cy="20" r="1.4" />
+          </svg>
+          <span>Cart</span>
+        </router-link>
+        <router-link to="/orders">
+          <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M7 3h10a2 2 0 0 1 2 2v16l-3-2-3 2-3-2-3 2-2-1.3V5a2 2 0 0 1 2-2Z" />
+            <path d="M9 8h6M9 12h6M9 16h4" />
+          </svg>
+          <span>Orders</span>
+        </router-link>
       </template>
 
       <template v-else>

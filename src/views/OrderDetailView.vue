@@ -5,6 +5,7 @@ import { getOrder } from "@/api/order";
 import LoadingSpinner from "@/components/LaoadingSpinner.vue";
 import { asArray, asObject } from "@/utils/apiResponse";
 import { lineTotal, money, orderTotal } from "@/utils/money";
+import { fallbackProductImage, productImageUrl } from "@/utils/productImage";
 
 const route = useRoute();
 const order = ref(null);
@@ -21,6 +22,12 @@ onMounted(async () => {
     loading.value = false;
   }
 });
+
+const productForItem = (item) => item.product ?? item;
+
+const useFallbackImage = (event) => {
+  event.target.src = fallbackProductImage;
+};
 </script>
 
 <template>
@@ -35,9 +42,19 @@ onMounted(async () => {
       </div>
 
       <article v-for="item in asArray(order.items ?? order.order_items)" :key="item.id" class="line-item">
-        <div>
-          <h3>{{ item.product?.name ?? item.name }}</h3>
-          <p>Qty: {{ item.quantity ?? item.qty ?? 1 }}</p>
+        <div class="cart-product">
+          <img
+            :src="productImageUrl(productForItem(item))"
+            :alt="item.product?.name ?? item.name ?? 'Product image'"
+            class="cart-product-image"
+            loading="lazy"
+            @error="useFallbackImage"
+          />
+
+          <div>
+            <h3>{{ item.product?.name ?? item.name }}</h3>
+            <p>Qty: {{ item.quantity ?? item.qty ?? 1 }}</p>
+          </div>
         </div>
         <strong>${{ money(lineTotal(item)) }}</strong>
       </article>
