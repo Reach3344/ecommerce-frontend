@@ -85,6 +85,19 @@ Override it with:
 VITE_API_URL=https://your-api-domain.com/api
 ```
 
+## Telegram Order Notifications
+
+Checkout can send a Telegram message after an order is created. Add these values to
+your `.env` file:
+
+```bash
+VITE_TELEGRAM_BOT_TOKEN=your_bot_token
+VITE_TELEGRAM_CHAT_ID=your_chat_id
+```
+
+The checkout still succeeds if Telegram is not configured or the notification
+request fails.
+
 When a token exists in `localStorage`, requests include it as a Bearer token in the `Authorization` header.
 
 ## Project Structure

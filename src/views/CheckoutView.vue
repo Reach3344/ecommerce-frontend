@@ -2,6 +2,7 @@
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { checkout } from "@/api/checkout";
+import { sendTelegramOrderMessage } from "@/api/telegram";
 import { useCartStore } from "@/stores/cart";
 import { asObject } from "@/utils/apiResponse";
 import { money } from "@/utils/money";
@@ -26,12 +27,25 @@ const submit = async () => {
   loading.value = true;
 
   try {
+    const checkoutItems = [...cart.items];
+    const checkoutTotal = cart.total;
     const payload = {
       ...form.value,
       shipping_phone: form.value.phone,
     };
     const res = await checkout(payload);
     const order = asObject(res, "order");
+
+    try {
+      await sendTelegramOrderMessage({
+        form: form.value,
+        items: checkoutItems,
+        order,
+        total: checkoutTotal,
+      });
+    } catch (telegramError) {
+      console.error(telegramError);
+    }
 
     await cart.fetchCart();
 

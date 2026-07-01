@@ -6,6 +6,7 @@ import LoadingSpinner from "@/components/LaoadingSpinner.vue";
 import { asArray } from "@/utils/apiResponse";
 import { useAuthStore } from "@/stores/auth";
 import { useWishlistStore } from "@/stores/wishlist";
+import { productImageUrl } from "@/utils/productImage";
 
 const products = ref([]);
 const loading = ref(true);
@@ -23,6 +24,25 @@ const productTypes = computed(() => {
 
   return [...new Set(types)].sort((a, b) => a.localeCompare(b));
 });
+const productCategories = computed(() => {
+  const categories = new Map();
+
+  products.value.forEach((product) => {
+    const name = getProductType(product);
+    if (!categories.has(name)) {
+      categories.set(name, {
+        name,
+        image: productImageUrl(product),
+        count: 0,
+      });
+    }
+
+    categories.get(name).count += 1;
+  });
+
+  return Array.from(categories.values()).slice(0, 4);
+});
+const topWeeklyPicks = computed(() => products.value.slice(0, 4));
 const filteredProducts = computed(() => {
   const query = searchQuery.value.trim().toLowerCase();
   const type = selectedType.value;
@@ -110,18 +130,62 @@ onMounted(async () => {
     </div>
   </section>
 
-  <section class="store-strip" aria-label="Shopping benefits">
-    <div>
-      <b>Market fresh</b>
-      <span>Stock checked every morning</span>
+  <section class="features-section container">
+    <div class="feature-grid">
+      <article class="feature-card">
+        <div class="feature-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 10h12" />
+            <path d="M5 6h10v12H5z" />
+            <path d="M18 14v-4a2 2 0 0 0-2-2h-1" />
+            <path d="M18 16h2v4h-2z" />
+            <circle cx="7.5" cy="18.5" r="1.5" />
+            <circle cx="17.5" cy="18.5" r="1.5" />
+            <path d="M15 6h3" />
+          </svg>
+        </div>
+        <strong>Same-Day Delivery</strong>
+        <span>Order by noon and receive fresh groceries by dinner with fast, reliable shipping.</span>
+      </article>
+      <article class="feature-card">
+        <div class="feature-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2C8 6 4 7 4 11a8 8 0 0 0 8 8 8 8 0 0 0 8-8c0-4-4-5-8-9z" />
+            <path d="M12 12l-2 2 4 4" />
+          </svg>
+        </div>
+        <strong>Organic Certified</strong>
+        <span>All products are pesticide-free and non-GMO, curated from certified organic growers.</span>
+      </article>
+      <article class="feature-card">
+        <div class="feature-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 11l9-7 9 7" />
+            <path d="M4 11v8a2 2 0 0 0 2 2h3v-6h6v6h3a2 2 0 0 0 2-2v-8" />
+            <path d="M9 22v-6h6v6" />
+          </svg>
+        </div>
+        <strong>Direct from Farms</strong>
+        <span>Cutting out middlemen means fresher produce and better prices for both farmers and customers.</span>
+      </article>
     </div>
-    <div>
-      <b>Secure checkout</b>
-      <span>Protected customer account</span>
+  </section>
+
+  <section class="top-picks-section container">
+    <div class="page-heading product-heading">
+      <div>
+        <p class="eyebrow">Top Weekly Picks</p>
+        <h1>Fresh favorites for your basket</h1>
+      </div>
+      <p>Hand-picked seasonal products selected from our freshest arrivals.</p>
     </div>
-    <div>
-      <b>Easy reorder</b>
-      <span>Cart, wishlist, and order history</span>
+
+    <div class="product-grid">
+      <ProductCard
+        v-for="product in topWeeklyPicks"
+        :key="product.id"
+        :product="product"
+      />
     </div>
   </section>
 
