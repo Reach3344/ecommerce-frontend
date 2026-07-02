@@ -563,6 +563,36 @@ p {
   color: #fff;
 }
 
+.button.google {
+  background: #fff;
+  color: #202124;
+  border-color: #dadce0;
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.08);
+}
+
+.button.google:hover {
+  background: #f7f7f7;
+}
+
+.button.google {
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.google-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+}
+
+.google-icon svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
 .button-row {
   display: flex;
   flex-wrap: wrap;

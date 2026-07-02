@@ -10,6 +10,7 @@ import CheckoutView from "@/views/CheckoutView.vue";
 import OrdersView from "@/views/OrdersView.vue";
 import OrderDetailView from "@/views/OrderDetailView.vue";
 import ProfileView from "@/views/ProfileView.vue";
+import OAuthCallbackView from "@/views/OAuthCallbackView.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -36,6 +37,7 @@ const router = createRouter({
     { path: "/orders", name: "orders", component: OrdersView, meta: { requiresAuth: true } },
     { path: "/orders/:id", name: "order-detail", component: OrderDetailView, meta: { requiresAuth: true } },
     { path: "/profile", name: "profile", component: ProfileView, meta: { requiresAuth: true } },
+    { path: "/auth/callback", name: "oauth-callback", component: OAuthCallbackView },
     { path: "/:pathMatch(.*)*", redirect: "/" },
   ],
 });

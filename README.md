@@ -85,6 +85,14 @@ Override it with:
 VITE_API_URL=https://your-api-domain.com/api
 ```
 
+If your backend uses a custom OAuth endpoint for Google sign-in, add:
+
+```bash
+VITE_GOOGLE_AUTH_URL=https://your-api-domain.com/auth/google
+```
+
+The app will redirect to `/auth/callback` after Google authentication, and the backend should return `token` or `access_token` in the callback URL.
+
 ## Telegram Order Notifications
 
 Checkout can send a Telegram message after an order is created. Add these values to
