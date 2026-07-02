@@ -6,6 +6,7 @@ import { sendTelegramOrderMessage } from "@/api/telegram";
 import { useCartStore } from "@/stores/cart";
 import { asObject } from "@/utils/apiResponse";
 import { money } from "@/utils/money";
+import paymentQrImage from "@/assets/payment-qr-talab-reach.png";
 
 const router = useRouter();
 const cart = useCartStore();
@@ -91,7 +92,7 @@ const submit = async () => {
         Payment method
         <select v-model="form.payment_method">
           <option value="cash_on_delivery">Cash on delivery</option>
-          <option value="card">Card</option>
+          <option value="card">Card / QR payment</option>
         </select>
       </label>
 
@@ -116,6 +117,42 @@ const submit = async () => {
         <span>Total</span>
         <strong>${{ money(cart.total) }}</strong>
       </div>
+
+      <div v-if="form.payment_method === 'card'" class="payment-qr-panel">
+        <img :src="paymentQrImage" alt="TALAB REACH payment QR code" />
+        <p>Scan this code to complete payment before placing your order.</p>
+      </div>
     </aside>
   </section>
 </template>
+
+<style scoped>
+.payment-qr-panel {
+  display: grid;
+  justify-items: center;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+  padding: 1rem;
+  border-top: 1px solid var(--border);
+  border: 1px solid rgba(31, 122, 77, 0.14);
+  border-radius: 14px;
+  background: #f8fcf9;
+}
+
+.payment-qr-panel img {
+  width: min(240px, 100%);
+  height: auto;
+  display: block;
+  border-radius: 12px;
+  box-shadow: 0 12px 28px rgba(23, 32, 51, 0.1);
+}
+
+.payment-qr-panel p {
+  max-width: 32ch;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.5;
+  text-align: center;
+}
+</style>
