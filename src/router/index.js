@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "@/views/HomeView.vue";
 import LoginView from "@/views/LoginView.vue";
 import RegisterView from "@/views/RegisterView.vue";
+import ProductsView from "@/views/ProductsView.vue";
 import ProductDetailView from "@/views/ProductDetailView.vue";
 import CartView from "@/views/CartView.vue";
 import WishlistView from "@/views/WishlistView.vue";
@@ -27,6 +28,10 @@ const router = createRouter({
         path: "/register", 
         name: "register", 
         component: RegisterView },
+    { 
+        path: "/products", 
+        name: "products", 
+        component: ProductsView },
     { 
         path: "/products/:id",
         name: "product-detail", 

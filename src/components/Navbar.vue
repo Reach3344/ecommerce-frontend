@@ -32,7 +32,8 @@ const confirmLogout = async () => {
     </router-link>
 
     <nav class="nav-links" aria-label="Primary navigation">
-      <router-link to="/">Products</router-link>
+      <router-link to="/">Home</router-link>
+      <router-link to="/products">Products</router-link>
 
       <template v-if="isLoggedIn">
         <router-link to="/wishlist">
